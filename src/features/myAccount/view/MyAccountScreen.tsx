@@ -109,12 +109,6 @@ export default function MyAccountScreen({ navigation }: Props) {
                 <Text style={styles.versionText}>
                   APP VERSION {viewModel.account.appVersion}
                 </Text>
-                <View style={styles.sessionStatus}>
-                  <View style={styles.sessionDot} />
-                  <Text style={styles.sessionText}>
-                    {viewModel.account.sessionStatus}
-                  </Text>
-                </View>
               </View>
             </>
           ) : null}

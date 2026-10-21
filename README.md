@@ -2,6 +2,14 @@
 
 A React Native mobile app for browsing an online clothing store. The app currently includes a product catalog, product details, and separate Shop, Bag, and Wishlist tabs.
 
+| Shop | Product details | Wishlist |
+| --- | --- | --- |
+| <img src="./src/shared/assets/tempAssetsForReadme/1.png" alt="Shop screen preview" width="170" /> | <img src="./src/shared/assets/tempAssetsForReadme/2.png" alt="Product details screen preview" width="170" /> | <img src="./src/shared/assets/tempAssetsForReadme/3.png" alt="Wishlist screen preview" width="170" /> |
+
+| Shopping bag | My Account |
+| --- | --- |
+| <img src="./src/shared/assets/tempAssetsForReadme/4.png" alt="Shopping bag screen preview" width="170" /> | <img src="./src/shared/assets/tempAssetsForReadme/5.png" alt="My Account screen preview" width="170" /> |
+
 ## Features
 
 - Browse clothing by category, search the catalog, filter by size, and sort by price.
