@@ -1,7 +1,7 @@
-import { wishlistProducts } from '../model/wishlistModel';
+import { useAppSelector } from '../../../app/store/hooks';
 
 export function useWishlistViewModel() {
-  return {
-    products: wishlistProducts,
-  };
+  const products = useAppSelector(state => state.wishlist);
+
+  return { products };
 }

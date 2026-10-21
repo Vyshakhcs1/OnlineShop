@@ -7,9 +7,10 @@ A React Native mobile app for browsing an online clothing store. The app current
 - Browse clothing by category, search the catalog, filter by size, and sort by price.
 - Open a product details screen with size and color selection, description, size guide, and product imagery.
 - Navigate between Shop, Bag, and Wishlist using bottom tabs.
-- Product data and shared store options are local for now, ready to be replaced by API data later.
+- Add selected product variants to the Bag, manage item quantities, and review an order summary; the Bag tab badge reflects total quantity.
+- Add and remove products from the Wishlist; both Bag and Wishlist are held in Redux for the current app session.
 
-The Bag and Wishlist screens are placeholders at this stage. Cart and wishlist state are not persisted or shared across screens.
+Bag and Wishlist state is not persisted between app launches.
 
 ## Tech stack
 
@@ -18,6 +19,7 @@ The Bag and Wishlist screens are placeholders at this stage. Cart and wishlist s
 - TypeScript
 - React Navigation (native stack and bottom tabs)
 - Redux Toolkit and React Redux
+- React Native Device Info
 - React Native Safe Area Context
 - Lucide icons
 
@@ -30,12 +32,13 @@ src/
   features/
     cart/                Bag screen, model, and view model
     home/                Shop catalog, model, and view model
+    myAccount/           My Account profile screen and API mapping
     productDetails/      Product details screen, model, and view model
     wishlist/            Wishlist screen, model, and view model
   service/               API client
   shared/
     components/          Reusable UI components
-    constants/           API endpoint and shared store options
+    constants/           API endpoints, static account and cart UI options, and store options
     models/              Shared TypeScript models
 ```
 
@@ -85,6 +88,30 @@ npm run android
 npm run lint
 npm test -- --runInBand
 ```
+
+## Unit tests
+
+The Jest suite covers unit-level behavior without running the app on a simulator
+or device. The scenarios currently tested are:
+
+| Area | Scenarios |
+| --- | --- |
+| API client | Returns JSON after a successful request; retries after a network error or a non-OK HTTP response; rejects with the final network error after three attempts; rejects after three non-OK responses. |
+| Product API model | Calls the configured product API URL; returns valid product data; rejects a non-array response, a product missing required fields, and malformed color data. |
+| Profile API model | Calls the configured profile API URL; maps name, image, status, species, gender, origin, and current location; rejects malformed profile data; maps identity detail rows and reads the installed app version. |
+| Products Redux slice | Starts with an empty catalog and replaces it with the supplied products. |
+| Wishlist Redux slice | Adds a product, removes it when toggled again, and preserves other products when removing one. |
+| Cart Redux slice | Adds a selected variant; increments an existing matching variant; keeps different sizes and colors as separate lines; increments and decrements quantities; removes a line when quantity reaches zero; removes only the specified variant. |
+| Cart summary | Returns zero values for an empty cart; calculates item count, subtotal, promotion discount, shipping, VAT, and total for one or multiple cart lines. |
+| App smoke test | Renders the app entry point with the existing native-module mocks. |
+
+Run all unit tests with:
+
+```sh
+npm test -- --runInBand
+```
+
+End-to-end tests and device/simulator interaction scenarios are not included yet.
 
 ## Product data
 

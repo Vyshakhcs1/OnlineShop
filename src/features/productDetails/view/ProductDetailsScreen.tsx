@@ -82,9 +82,14 @@ export default function ProductDetailsScreen({ navigation, route }: Props) {
             >
               <Lucide name="share-2" size={20} color="#111111" />
             </Pressable>
-            <View style={styles.profileIcon}>
+            <Pressable
+              accessibilityLabel="My account"
+              accessibilityRole="button"
+              onPress={() => navigation.navigate('MyAccount')}
+              style={styles.profileIcon}
+            >
               <Lucide name="user-round" size={20} color="#FFFFFF" />
-            </View>
+            </Pressable>
           </View>
         </View>
 
@@ -129,7 +134,7 @@ export default function ProductDetailsScreen({ navigation, route }: Props) {
                 detail.isFavorite ? 'Remove from wishlist' : 'Add to wishlist'
               }
               accessibilityRole="button"
-              onPress={() => detail.setIsFavorite(!detail.isFavorite)}
+              onPress={detail.toggleFavorite}
               style={styles.favoriteButton}
             >
               <Lucide
@@ -233,7 +238,7 @@ export default function ProductDetailsScreen({ navigation, route }: Props) {
 
             <Pressable
               accessibilityRole="button"
-              onPress={() => detail.setIsAddedToBag(true)}
+              onPress={() => detail.addToBag(detail.selectedColorIndex)}
               style={[
                 styles.addToBagButton,
                 detail.isAddedToBag && styles.addedToBagButton,

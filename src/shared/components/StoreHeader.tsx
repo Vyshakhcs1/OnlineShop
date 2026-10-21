@@ -1,11 +1,13 @@
 import React from 'react';
 import { ReactNode } from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Lucide } from '@react-native-vector-icons/lucide/static';
 import { STORE_DEPARTMENTS } from '../constants/storeOptions';
 
 interface StoreHeaderProps {
   footer?: ReactNode;
+  onAccountPress?: () => void;
+  onBackPress?: () => void;
   onSearchChange?: (query: string) => void;
   searchQuery?: string;
   title?: string;
@@ -14,6 +16,8 @@ interface StoreHeaderProps {
 
 export default function StoreHeader({
   footer,
+  onAccountPress,
+  onBackPress,
   onSearchChange,
   searchQuery,
   title,
@@ -22,13 +26,30 @@ export default function StoreHeader({
   return (
     <View style={[styles.header, variant === 'shop' && styles.shopHeader]}>
       <View style={styles.topBar}>
-        <Text accessibilityLabel="Menu" style={styles.menuIcon}>
-          ☰
-        </Text>
+        {onBackPress ? (
+          <Pressable
+            accessibilityLabel="Go back"
+            accessibilityRole="button"
+            onPress={onBackPress}
+            style={styles.backButton}
+          >
+            <Lucide name="arrow-left" size={23} color="#111111" />
+          </Pressable>
+        ) : (
+          <Text accessibilityLabel="Menu" style={styles.menuIcon}>
+            ☰
+          </Text>
+        )}
         <Text style={styles.brand}>ShopSquare</Text>
-        <View style={styles.profileIcon}>
+        <Pressable
+          accessibilityLabel="My account"
+          accessibilityRole="button"
+          disabled={!onAccountPress}
+          onPress={onAccountPress}
+          style={styles.profileIcon}
+        >
           <Lucide name="user-round" size={19} color="white" />
-        </View>
+        </Pressable>
       </View>
 
       {variant === 'shop' ? (
@@ -78,6 +99,11 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: '700',
     letterSpacing: -1,
+  },
+  backButton: {
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    width: 45,
   },
   department: {
     borderBottomColor: 'transparent',

@@ -145,6 +145,7 @@ export default function HomeScreen() {
               })}
             </ScrollView>
           }
+          onAccountPress={() => navigation.navigate('MyAccount')}
           onSearchChange={home.setQuery}
           searchQuery={home.query}
           variant="shop"

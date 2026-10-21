@@ -1,20 +1,14 @@
-import { useMemo, useState } from 'react';
-import { initialCartItems } from '../model/cartModel';
+import { useMemo } from 'react';
+import { useAppSelector } from '../../../app/store/hooks';
+import { calculateCartSummary } from '../model/cartModel';
 
 export function useCartViewModel() {
-  const [items] = useState(initialCartItems);
-  const subtotal = useMemo(
-    () =>
-      items.reduce(
-        (total, item) => total + item.product.price * item.quantity,
-        0,
-      ),
-    [items],
-  );
+  const items = useAppSelector(state => state.cart);
+  const summary = useMemo(() => calculateCartSummary(items), [items]);
 
   return {
     isEmpty: items.length === 0,
     items,
-    subtotal,
+    ...summary,
   };
 }

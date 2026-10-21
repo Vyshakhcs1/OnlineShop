@@ -4,6 +4,7 @@ import CartScreen from '../../features/cart/view/CartScreen';
 import HomeScreen from '../../features/home/view/HomeScreen';
 import WishlistScreen from '../../features/wishlist/view/WishlistScreen';
 import { Lucide } from '@react-native-vector-icons/lucide/static';
+import { useAppSelector } from '../store/hooks';
 
 type StoreTabParamList = {
   Shop: undefined;
@@ -15,6 +16,9 @@ const Tab = createBottomTabNavigator<StoreTabParamList>();
 
 export default function TabNavigator() {
   const insets = useSafeAreaInsets();
+  const cartItemCount = useAppSelector(state =>
+    state.cart.reduce((count, item) => count + item.quantity, 0),
+  );
 
   return (
     <Tab.Navigator
@@ -49,6 +53,13 @@ export default function TabNavigator() {
         name="Bag"
         options={{
           tabBarIcon: BagTabIcon,
+          tabBarBadge: cartItemCount > 0 ? cartItemCount : undefined,
+          tabBarBadgeStyle: {
+            backgroundColor: '#111111',
+            color: '#FFFFFF',
+            fontSize: 9,
+            minWidth: 17,
+          },
         }}
       />
       <Tab.Screen

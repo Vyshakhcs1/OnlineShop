@@ -1,6 +1,8 @@
 import React from 'react';
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Lucide } from '@react-native-vector-icons/lucide/static';
+import { useAppDispatch, useAppSelector } from '../../app/store/hooks';
+import { toggleWishlistProduct } from '../../app/store/slices/wishlistSlice';
 import { Product } from '../models/product';
 
 interface ProductCardProps {
@@ -9,52 +11,67 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ onPress, product }: ProductCardProps) {
-  return (
-    <Pressable
-      accessibilityLabel={`View ${product.title} details`}
-      accessibilityRole="button"
-      onPress={() => onPress?.(product.id)}
-      style={styles.card}
-    >
-      <View style={styles.imageContainer}>
-        <Image
-          accessibilityLabel={product.title}
-          resizeMode="cover"
-          source={{ uri: product.imageUrl }}
-          style={styles.image}
-        />
-        {product.tag ? (
-          <View style={styles.tag}>
-            <Text style={styles.tagText}>{product.tag}</Text>
-          </View>
-        ) : null}
-        <View
-          accessibilityLabel="Wishlist actions will be available soon"
-          accessibilityRole="image"
-          style={styles.favoriteButton}
-        >
-          <Lucide name="heart" size={23} color="black" />
-        </View>
-      </View>
+  const dispatch = useAppDispatch();
+  const isWishlisted = useAppSelector(state =>
+    state.wishlist.some(item => item.id === product.id),
+  );
 
-      <Text numberOfLines={1} style={styles.title}>
-        {product.title}
-      </Text>
-      <Text style={styles.price}>
-        {product.currency} {product.price}
-      </Text>
-      <View style={styles.swatches}>
-        {product.colors.map((color, index) => (
-          <View
-            accessibilityLabel={color.name}
-            key={`${product.id}-${color.name}`}
-            style={[styles.swatchOuter, index === 0 && styles.selectedSwatch]}
-          >
-            <View style={[styles.swatch, { backgroundColor: color.hex }]} />
-          </View>
-        ))}
-      </View>
-    </Pressable>
+  return (
+    <View style={styles.card}>
+      <Pressable
+        accessibilityLabel={`View ${product.title} details`}
+        accessibilityRole="button"
+        onPress={() => onPress?.(product.id)}
+      >
+        <View style={styles.imageContainer}>
+          <Image
+            accessibilityLabel={product.title}
+            resizeMode="cover"
+            source={{ uri: product.imageUrl }}
+            style={styles.image}
+          />
+          {product.tag ? (
+            <View style={styles.tag}>
+              <Text style={styles.tagText}>{product.tag}</Text>
+            </View>
+          ) : null}
+        </View>
+        <Text numberOfLines={1} style={styles.title}>
+          {product.title}
+        </Text>
+        <Text style={styles.price}>
+          {product.currency} {product.price}
+        </Text>
+        <View style={styles.swatches}>
+          {product.colors.map((color, index) => (
+            <View
+              accessibilityLabel={color.name}
+              key={`${product.id}-${color.name}`}
+              style={[styles.swatchOuter, index === 0 && styles.selectedSwatch]}
+            >
+              <View style={[styles.swatch, { backgroundColor: color.hex }]} />
+            </View>
+          ))}
+        </View>
+      </Pressable>
+      <Pressable
+        accessibilityLabel={
+          isWishlisted
+            ? `Remove ${product.title} from wishlist`
+            : `Add ${product.title} to wishlist`
+        }
+        accessibilityRole="button"
+        accessibilityState={{ selected: isWishlisted }}
+        onPress={() => dispatch(toggleWishlistProduct(product))}
+        style={styles.favoriteButton}
+      >
+        <Lucide
+          name="heart"
+          size={20}
+          color={isWishlisted ? '#C41E2B' : '#111111'}
+        />
+      </Pressable>
+    </View>
   );
 }
 
@@ -72,7 +89,7 @@ const styles = StyleSheet.create({
     height: 36,
     justifyContent: 'center',
     position: 'absolute',
-    right: 8,
+    right: 14,
     top: 8,
     width: 36,
   },
