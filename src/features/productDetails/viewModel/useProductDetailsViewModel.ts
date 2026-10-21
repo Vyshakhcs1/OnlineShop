@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { useAppSelector } from '../../../app/store/hooks';
 import { findProductById } from '../model/productDetailsModel';
 
 export function useProductDetailsViewModel(productId: string) {
-  const product = findProductById(productId);
+  const products = useAppSelector(state => state.products);
+  const product = findProductById(products, productId);
   const [selectedSize, setSelectedSize] = useState(
     product?.sizes.includes('M') ? 'M' : product?.sizes[0] ?? '',
   );

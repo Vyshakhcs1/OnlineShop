@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
@@ -13,6 +13,12 @@ export default function HomeScreen() {
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const home = useHomeViewModel();
+  const { initializeCatalog } = home;
+
+  useEffect(() => {
+    initializeCatalog();
+  }, [initializeCatalog]);
+
   const catalogHeader = (
     <>
       <View style={styles.catalogToolbar}>

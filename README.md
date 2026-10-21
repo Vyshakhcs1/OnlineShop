@@ -17,6 +17,7 @@ The Bag and Wishlist screens are placeholders at this stage. Cart and wishlist s
 - React `19`
 - TypeScript
 - React Navigation (native stack and bottom tabs)
+- Redux Toolkit and React Redux
 - React Native Safe Area Context
 - Lucide icons
 
@@ -25,6 +26,7 @@ The Bag and Wishlist screens are placeholders at this stage. Cart and wishlist s
 ```text
 src/
   app/navigation/        Root stack and bottom-tab navigation
+  app/store/             Redux store, typed hooks, and slices
   features/
     cart/                Bag screen, model, and view model
     home/                Shop catalog, model, and view model
@@ -86,6 +88,6 @@ npm test -- --runInBand
 
 ## Product data
 
-The hardcoded catalog is in [`src/shared/constants/products.json`](./src/shared/constants/products.json). Its TypeScript adapter is [`src/shared/constants/productCatalog.ts`](./src/shared/constants/productCatalog.ts). Shared categories, departments, and apparel sizes are in [`src/shared/constants/storeOptions.ts`](./src/shared/constants/storeOptions.ts).
+The hardcoded catalog is in [`src/shared/constants/products.json`](./src/shared/constants/products.json). The Shop screen initializes the Redux product catalog from this JSON when it mounts; Shop filtering and Product Details read the same `Product[]` from Redux. Shared categories, departments, and apparel sizes are in [`src/shared/constants/storeOptions.ts`](./src/shared/constants/storeOptions.ts).
 
-When a backend is introduced, the catalog adapter can be updated to provide API data while keeping the product model and feature screens unchanged.
+When a backend is introduced, the Redux catalog can be initialized from the API while keeping the product model and feature screens unchanged.

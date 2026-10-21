@@ -1,12 +1,15 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../../app/store/hooks';
 import {
   APPAREL_SIZES,
   HOME_CATEGORIES,
 } from '../../../shared/constants/storeOptions';
-import { products } from '../../../shared/constants/productCatalog';
+import { initializeProducts } from '../../../app/store/slices/productsSlice';
 import { HomeCategory } from '../model/homeModel';
 
 export function useHomeViewModel() {
+  const dispatch = useAppDispatch();
+  const products = useAppSelector(state => state.products);
   const [query, setQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<HomeCategory>(
     HOME_CATEGORIES[0],
@@ -16,6 +19,10 @@ export function useHomeViewModel() {
   const [sortOrder, setSortOrder] = useState<
     'featured' | 'lowToHigh' | 'highToLow'
   >('featured');
+
+  const initializeCatalog = useCallback(() => {
+    dispatch(initializeProducts());
+  }, [dispatch]);
 
   const visibleProducts = useMemo(() => {
     let result = products.filter(product => {
@@ -43,7 +50,7 @@ export function useHomeViewModel() {
     }
 
     return result;
-  }, [query, selectedCategory, selectedSize, sortOrder]);
+  }, [products, query, selectedCategory, selectedSize, sortOrder]);
 
   const cycleSortOrder = () => {
     setSortOrder(current =>
@@ -68,6 +75,7 @@ export function useHomeViewModel() {
   return {
     clearFilters,
     cycleSortOrder,
+    initializeCatalog,
     isFilterOpen,
     products: visibleProducts,
     query,

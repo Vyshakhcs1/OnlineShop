@@ -7,14 +7,18 @@
 
 import { StatusBar, StyleSheet, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Provider } from 'react-redux';
 import RootNavigator from './src/app/navigation/RootNavigator';
+import { store } from './src/app/store/store';
 
 function App() {
   return (
-    <SafeAreaProvider>
-      <StatusBar barStyle="dark-content" />
-      <AppContent />
-    </SafeAreaProvider>
+    <Provider store={store}>
+      <SafeAreaProvider>
+        <StatusBar barStyle="dark-content" />
+        <AppContent />
+      </SafeAreaProvider>
+    </Provider>
   );
 }
 
