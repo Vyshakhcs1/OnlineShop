@@ -1,0 +1,14 @@
+pluginManagement { includeBuild("../node_modules/@react-native/gradle-plugin") }
+plugins { id("com.facebook.react.settings") }
+def npxCmd = "/Users/priyankavyshakh/.nvm/versions/node/v22.13.0/bin/npx"
+
+extensions.configure(com.facebook.react.ReactSettingsExtension) { ex ->
+    ex.autolinkLibrariesFromCommand([
+        npxCmd,
+        "@react-native-community/cli",
+        "config"
+    ])
+}
+rootProject.name = 'OnlineShop'
+include ':app'
+includeBuild('../node_modules/@react-native/gradle-plugin')
