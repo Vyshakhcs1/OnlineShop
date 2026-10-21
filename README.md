@@ -126,3 +126,12 @@ End-to-end tests and device/simulator interaction scenarios are not included yet
 The Shop screen fetches the product catalog from the API configured in [`src/shared/constants/api.ts`](./src/shared/constants/api.ts) when it mounts. It stores the response in Redux using the existing `Product[]` shape; Shop filtering and Product Details read their data from Redux. Shared categories, departments, and apparel sizes are in [`src/shared/constants/storeOptions.ts`](./src/shared/constants/storeOptions.ts).
 
 If the product API is unavailable, the request is retried and the Shop screen shows an error with an option to retry.
+
+Note: EAS Build / EAS Update is not integrated as of now.
+
+## Android build
+
+The APK build is located at [`Builds/shopSquare.apk`](./Builds/shopSquare.apk).
+
+## iOS build
+The iOS project is included in the source code, but a shareable iPhone build is not provided because Apple signing and provisioning credentials are not configured.
