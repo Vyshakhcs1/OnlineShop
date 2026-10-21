@@ -4,12 +4,14 @@ import {
   APPAREL_SIZES,
   HOME_CATEGORIES,
 } from '../../../shared/constants/storeOptions';
-import { initializeProducts } from '../../../app/store/slices/productsSlice';
-import { HomeCategory } from '../model/homeModel';
+import { setProducts } from '../../../app/store/slices/productsSlice';
+import { fetchProducts, HomeCategory } from '../model/homeModel';
 
 export function useHomeViewModel() {
   const dispatch = useAppDispatch();
   const products = useAppSelector(state => state.products);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [query, setQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<HomeCategory>(
     HOME_CATEGORIES[0],
@@ -20,8 +22,22 @@ export function useHomeViewModel() {
     'featured' | 'lowToHigh' | 'highToLow'
   >('featured');
 
-  const initializeCatalog = useCallback(() => {
-    dispatch(initializeProducts());
+  const initializeCatalog = useCallback(async () => {
+    setIsLoading(true);
+    setErrorMessage(null);
+
+    try {
+      const apiProducts = await fetchProducts();
+      dispatch(setProducts(apiProducts));
+    } catch (error) {
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : 'Unable to load products. Please try again.',
+      );
+    } finally {
+      setIsLoading(false);
+    }
   }, [dispatch]);
 
   const visibleProducts = useMemo(() => {
@@ -75,8 +91,10 @@ export function useHomeViewModel() {
   return {
     clearFilters,
     cycleSortOrder,
+    errorMessage,
     initializeCatalog,
     isFilterOpen,
+    isLoading,
     products: visibleProducts,
     query,
     selectedCategory,

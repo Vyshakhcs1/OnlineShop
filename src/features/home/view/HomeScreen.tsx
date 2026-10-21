@@ -1,7 +1,14 @@
 import React, { useEffect } from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { RootStackParamList } from '../../../app/navigation/types';
 import ProductGrid from '../../../shared/components/ProductGrid';
@@ -143,14 +150,33 @@ export default function HomeScreen() {
           variant="shop"
         />
 
-        <ProductGrid
-          ListEmptyComponent={emptyResults}
-          ListHeaderComponent={catalogHeader}
-          onProductPress={productId =>
-            navigation.navigate('ProductDetails', { productId })
-          }
-          products={home.products}
-        />
+        {home.isLoading ? (
+          <View accessibilityRole="progressbar" style={styles.requestState}>
+            <ActivityIndicator color="#111111" size="large" />
+            <Text style={styles.requestStateMessage}>Loading products...</Text>
+          </View>
+        ) : home.errorMessage ? (
+          <View style={styles.requestState}>
+            <Text style={styles.requestStateTitle}>Couldn’t load products</Text>
+            <Text style={styles.requestStateMessage}>{home.errorMessage}</Text>
+            <Pressable
+              accessibilityRole="button"
+              onPress={home.initializeCatalog}
+              style={styles.retryButton}
+            >
+              <Text style={styles.retryButtonText}>TRY AGAIN</Text>
+            </Pressable>
+          </View>
+        ) : (
+          <ProductGrid
+            ListEmptyComponent={emptyResults}
+            ListHeaderComponent={catalogHeader}
+            onProductPress={productId =>
+              navigation.navigate('ProductDetails', { productId })
+            }
+            products={home.products}
+          />
+        )}
       </View>
     </SafeAreaView>
   );
@@ -249,6 +275,37 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '400',
     letterSpacing: 0,
+  },
+  requestState: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+    paddingHorizontal: 24,
+  },
+  requestStateMessage: {
+    color: '#666666',
+    fontSize: 13,
+    lineHeight: 20,
+    marginTop: 10,
+    textAlign: 'center',
+  },
+  requestStateTitle: {
+    color: '#151515',
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  retryButton: {
+    backgroundColor: '#111111',
+    borderRadius: 6,
+    marginTop: 18,
+    paddingHorizontal: 20,
+    paddingVertical: 13,
+  },
+  retryButtonText: {
+    color: '#FFFFFF',
+    fontSize: 11,
+    fontWeight: '700',
+    letterSpacing: 1,
   },
   safeArea: {
     backgroundColor: '#FAFAFA',

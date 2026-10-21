@@ -1,4 +1,4 @@
-# OnlineShop
+# ShopSquare
 
 A React Native mobile app for browsing an online clothing store. The app currently includes a product catalog, product details, and separate Shop, Bag, and Wishlist tabs.
 
@@ -35,7 +35,7 @@ src/
   service/               API client
   shared/
     components/          Reusable UI components
-    constants/           Product catalog and shared store options
+    constants/           API endpoint and shared store options
     models/              Shared TypeScript models
 ```
 
@@ -88,6 +88,6 @@ npm test -- --runInBand
 
 ## Product data
 
-The hardcoded catalog is in [`src/shared/constants/products.json`](./src/shared/constants/products.json). The Shop screen initializes the Redux product catalog from this JSON when it mounts; Shop filtering and Product Details read the same `Product[]` from Redux. Shared categories, departments, and apparel sizes are in [`src/shared/constants/storeOptions.ts`](./src/shared/constants/storeOptions.ts).
+The Shop screen fetches the product catalog from the API configured in [`src/shared/constants/api.ts`](./src/shared/constants/api.ts) when it mounts. It stores the response in Redux using the existing `Product[]` shape; Shop filtering and Product Details read their data from Redux. Shared categories, departments, and apparel sizes are in [`src/shared/constants/storeOptions.ts`](./src/shared/constants/storeOptions.ts).
 
-When a backend is introduced, the Redux catalog can be initialized from the API while keeping the product model and feature screens unchanged.
+If the product API is unavailable, the request is retried and the Shop screen shows an error with an option to retry.

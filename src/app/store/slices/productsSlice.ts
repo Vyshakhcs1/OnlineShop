@@ -1,14 +1,13 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { products as initialProducts } from '../../../shared/constants/productCatalog';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Product } from '../../../shared/models/product';
 
 const productsSlice = createSlice({
   name: 'products',
   initialState: [] as Product[],
   reducers: {
-    initializeProducts: () => initialProducts,
+    setProducts: (_state, action: PayloadAction<Product[]>) => action.payload,
   },
 });
 
-export const { initializeProducts } = productsSlice.actions;
+export const { setProducts } = productsSlice.actions;
 export default productsSlice.reducer;
