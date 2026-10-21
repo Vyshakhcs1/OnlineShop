@@ -135,3 +135,7 @@ The APK build is located at [`Builds/shopSquare.apk`](./Builds/shopSquare.apk).
 
 ## iOS build
 The iOS project is included in the source code, but a shareable iPhone build is not provided because Apple signing and provisioning credentials are not configured.
+
+## Branching note
+
+I missed creating a separate branch for each step, so the work is on one branch, organized into separate commits. The changes are still clearly separated and easy to review. I hope that works for you!
