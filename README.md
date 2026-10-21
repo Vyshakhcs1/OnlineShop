@@ -2,6 +2,9 @@
 
 A React Native mobile app for browsing an online clothing store. The app currently includes a product catalog, product details, and separate Shop, Bag, and Wishlist tabs.
 
+Demo: [Watch the ShopSquare demo](https://www.youtube.com/shorts/_3K5WYzuHzM)
+
+
 | Shop | Product details | Wishlist |
 | --- | --- | --- |
 | <img src="./src/shared/assets/tempAssetsForReadme/1.png" alt="Shop screen preview" width="170" /> | <img src="./src/shared/assets/tempAssetsForReadme/2.png" alt="Product details screen preview" width="170" /> | <img src="./src/shared/assets/tempAssetsForReadme/3.png" alt="Wishlist screen preview" width="170" /> |
